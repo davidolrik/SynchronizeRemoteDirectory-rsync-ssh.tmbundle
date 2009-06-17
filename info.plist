@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>deleted</key>
+	<array>
+		<string>42868EF7-041F-48FE-B911-6FC74CA9A647</string>
+	</array>
+	<key>name</key>
+	<string>Synchronize remote directory [rsync+ssh]</string>
+	<key>ordering</key>
+	<array>
+		<string>56C6FC75-19EA-454F-A2D2-D996DEBE2C89</string>
+		<string>3A41478C-BBC2-4834-B29E-EDAEA0BFCC50</string>
+		<string>FC6F95BC-C8D4-4056-A6A6-AE979CCABF8D</string>
+	</array>
+	<key>uuid</key>
+	<string>E2E79BFC-C023-4DE0-8A7B-67CF0E0CF415</string>
+</dict>
+</plist>

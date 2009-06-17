@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>
+        . "$TM_BUNDLE_SUPPORT/bin/environment.sh"
+        . "$TM_BUNDLE_SUPPORT/bin/test_for_project.sh"
+        . "$TM_BUNDLE_SUPPORT/bin/load_config.sh"
+        echo "&lt;h1&gt;Synchronize project&lt;/h1&gt;"
+        echo "&lt;pre&gt;"
+        cd "$TM_PROJECT_DIRECTORY"
+        rsync -v -zar $RSYNC_OPTIONS --exclude ".tm_sync.config" -e "ssh -p $REMOTE_PORT" \
+            . "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH" 2&gt;&amp;1 \
+            | grep -v 'bind: Address already in use' \
+            | grep -v 'channel_setup_fwd_listener: cannot listen to port:' \
+            | grep -v 'Could not request local forwarding.'
+        echo "&lt;/pre&gt;"
+        cd -
+
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>$@</string>
+	<key>name</key>
+	<string>Synchronize project</string>
+	<key>output</key>
+	<string>showAsHTML</string>
+	<key>uuid</key>
+	<string>3A41478C-BBC2-4834-B29E-EDAEA0BFCC50</string>
+</dict>
+</plist>

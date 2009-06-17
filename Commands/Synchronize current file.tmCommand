@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>        . "$TM_BUNDLE_SUPPORT/bin/environment.sh"
+        . "$TM_BUNDLE_SUPPORT/bin/test_for_project.sh"
+        . "$TM_BUNDLE_SUPPORT/bin/load_config.sh"
+        OUT=$(scp -P "$REMOTE_PORT" "$TM_FILEPATH" "$REMOTE_USER@$REMOTE_HOST:'$REMOTE_PATH${TM_FILEPATH/$TM_PROJECT_DIRECTORY/}'" 2&gt;&amp;1)
+        if [ -n "$OUT" ]; then
+            echo "$OUT"
+        else
+            echo "${TM_FILEPATH/$TM_PROJECT_DIRECTORY\//} synced ok"
+        fi</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>~@S</string>
+	<key>name</key>
+	<string>Synchronize current file</string>
+	<key>output</key>
+	<string>showAsTooltip</string>
+	<key>uuid</key>
+	<string>FC6F95BC-C8D4-4056-A6A6-AE979CCABF8D</string>
+</dict>
+</plist>
