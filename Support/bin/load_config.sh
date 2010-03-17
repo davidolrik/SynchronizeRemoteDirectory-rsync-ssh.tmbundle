@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f $CONFIG_FILE ]; then
+if [[ -f "$CONFIG_FILE" ]]; then
     source "$CONFIG_FILE"
 else
     CocoaDialog msgbox --text "Error: Not configured" \
