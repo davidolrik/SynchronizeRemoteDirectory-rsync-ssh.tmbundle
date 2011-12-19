@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>        . "$TM_BUNDLE_SUPPORT/bin/environment.sh"
+	<string>#!/bin/bash
+source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
+        . "$TM_BUNDLE_SUPPORT/bin/environment.sh"
         . "$TM_BUNDLE_SUPPORT/bin/test_for_project.sh"
         . "$TM_BUNDLE_SUPPORT/bin/load_config.sh"
+
+        print_message "Copy file to remote" "${TM_FILEPATH/$TM_PROJECT_DIRECTORY\//} to $REMOTE_HOST"
+
         OUT=$(scp -P "$REMOTE_PORT" "$TM_FILEPATH" "$REMOTE_USER@$REMOTE_HOST:'$REMOTE_PATH${TM_FILEPATH/$TM_PROJECT_DIRECTORY/}'" 2&gt;&amp;1)
         if [ -n "$OUT" ]; then
-            echo "$OUT"
+            error_message "Error" "$OUT"
         else
-            echo "${TM_FILEPATH/$TM_PROJECT_DIRECTORY\//} synced ok"
-        fi</string>
+            print_message "Copy completed ok" "${TM_FILEPATH/$TM_PROJECT_DIRECTORY\//}"
+        fi
+        if [[ -n "$REMOTE_POST_COMMAND" ]]; then
+            print_message "Running remote post command" "$REMOTE_POST_COMMAND"
+            OUT=$(ssh -f -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" -- "cd \"$REMOTE_PATH\" &amp;&amp; $REMOTE_POST_COMMAND 2&gt;&amp;1") &amp;&amp; print_message "Remote post command complete" "$OUT"
+        fi
+</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>
