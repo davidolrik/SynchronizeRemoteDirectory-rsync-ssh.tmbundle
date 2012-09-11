@@ -35,7 +35,7 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
             | grep -v 'Could not request local forwarding.'
         echo "&lt;/pre&gt;"
         cd - 2&gt;&amp;1 &gt; /dev/null
-        echo "&lt;b&gt;Synchronize complete!&lt;/b&gt;"
+        echo "&lt;b&gt;Sync complete!&lt;/b&gt;"
 
         if [[ -n "$REMOTE_POST_COMMAND" ]]; then
             echo "&lt;h3&gt;Running remote post command&lt;/h3&gt;"
