@@ -13,6 +13,10 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
 
         print_message "Copy file to remote" "${TM_FILEPATH/$TM_PROJECT_DIRECTORY\//} to $REMOTE_HOST"
 
+        if [[ -n "$REMOTE_PRE_COMMAND" ]]; then
+            print_message "Running remote pre command" "$REMOTE_PRE_COMMAND"
+            OUT=$(ssh -f -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" -- "cd \"$REMOTE_PATH\" &amp;&amp; $REMOTE_PRE_COMMAND 2&gt;&amp;1") &amp;&amp; print_message "Remote pre command complete" "$OUT"
+        fi
         OUT=$(scp -P "$REMOTE_PORT" "$TM_FILEPATH" "$REMOTE_USER@$REMOTE_HOST:'$REMOTE_PATH${TM_FILEPATH/$TM_PROJECT_DIRECTORY/}'" 2&gt;&amp;1)
         if [ -n "$OUT" ]; then
             error_message "Error" "$OUT"

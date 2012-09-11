@@ -15,5 +15,8 @@ RSYNC_OPTIONS="--exclude=.git --exclude=blib --exclude=_build --exclude=Makefile
 # with the contents of your project.
 # RSYNC_OPTIONS="--delete"
 
+# Use this option to run any command on the remote end before we copy
+# REMOTE_PRE_COMMAND="rm -rf ./tmp"
+
 # Use this option to run any command on the remote end after a successful copy
 # REMOTE_POST_COMMAND="make && make install"
