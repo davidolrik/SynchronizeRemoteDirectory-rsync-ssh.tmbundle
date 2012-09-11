@@ -20,3 +20,6 @@ RSYNC_OPTIONS="--exclude=.git --exclude=blib --exclude=_build --exclude=Makefile
 
 # Use this option to run any command on the remote end after a successful copy
 # REMOTE_POST_COMMAND="make && make install"
+
+# Use this option to dismiss the sync result after X seconds
+# AUTO_CLOSE_WINDOW=10

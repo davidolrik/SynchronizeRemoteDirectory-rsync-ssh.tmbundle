@@ -46,6 +46,11 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
             echo "&lt;/pre&gt;"
             echo "&lt;b&gt;Remote post command complete!&lt;/b&gt;";
         fi
+
+        if [ -n "$AUTO_CLOSE_WINDOW" ]; then
+            sleep $AUTO_CLOSE_WINDOW
+            echo "&amp;lt;script&amp;gt;top.window.close()&amp;lt;/script&amp;gt;"
+        fi
 </string>
 	<key>input</key>
 	<string>none</string>
