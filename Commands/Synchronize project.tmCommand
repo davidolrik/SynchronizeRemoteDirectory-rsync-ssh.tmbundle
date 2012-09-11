@@ -26,7 +26,7 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
         echo "&lt;pre&gt;"
         cd "$TM_PROJECT_DIRECTORY"
         RSYNC_CMD="rsync -v -zar --exclude=.tm_sync.config $RSYNC_OPTIONS"
-        echo $RSYNC_CMD
+        echo "$RSYNC_CMD -e \"ssh -p $REMOTE_PORT\" . \"$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH\""
         echo
         $RSYNC_CMD -e "ssh -p $REMOTE_PORT" \
             . "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH" 2&gt;&amp;1 \
