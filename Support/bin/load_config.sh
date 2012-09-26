@@ -4,7 +4,9 @@ if [[ -f "$CONFIG_FILE" ]]; then
     source "$CONFIG_FILE"
 else
     CocoaDialog msgbox --text "Error: Not configured" \
-        --informative-text "This feature only works when configured." \
+        --informative-text "Synchronizing with remote directory only works when configured.
+        
+Go to: Bundles → Synchronize Remote Directory [rsync+ssh] → Configure" \
         --button1 "Continue" \
         --icon "x"
     exit 1
