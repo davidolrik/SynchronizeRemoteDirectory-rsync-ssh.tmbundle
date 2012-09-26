@@ -8,27 +8,36 @@ elif [[ -x ~/bin/growlnotify ]]; then
     export GROWLNOTIFY="~/bin/growlnotify"
 fi
 
+if [[ -x /usr/bin/terminal-notifier ]]; then
+    export TERMINALNOTIFIER="/usr/bin/terminal-notifier"
+fi
+
 function print_message {
     TITLE="$1"
     MESSAGE="$2"
-
+    
     if [[ -n "$GROWLNOTIFY" ]]; then
         $GROWLNOTIFY -a TextMate -t "${TITLE}" -m "${MESSAGE}"
     else
         echo "${TITLE}: ${MESSAGE}"
-    fi    
+    fi
+    
+    if [[ -n "$TERMINALNOTIFIER" ]]; then
+        $TERMINALNOTIFIER -title "${TITLE}" -message "${MESSAGE}"
+    fi
 }
 
 function error_message {
     TITLE="$1"
     MESSAGE="$2"
-
+    
     if [[ -n "$GROWLNOTIFY" ]]; then
         $GROWLNOTIFY -a TextMate -t "${TITLE}" -m "${MESSAGE}" -p 2 -s
     else
         echo "${TITLE}: ${MESSAGE}"
-    fi    
+    fi
+    
+    if [[ -n "$GROWLNOTIFY" ]]; then
+        $TERMINALNOTIFIER -title "${TITLE}" -message "${MESSAGE}"
+    fi
 }
-
-
-
