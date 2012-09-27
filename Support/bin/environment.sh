@@ -2,42 +2,46 @@
 
 export CONFIG_FILE="$TM_PROJECT_DIRECTORY/.tm_sync.config"
 
-if [[ -x /usr/local/bin/growlnotify ]]; then
-    export GROWLNOTIFY="/usr/local/bin/growlnotify"
-elif [[ -x ~/bin/growlnotify ]]; then
-    export GROWLNOTIFY="~/bin/growlnotify"
-fi
-
-if [[ -x /usr/bin/terminal-notifier ]]; then
-    export TERMINALNOTIFIER="/usr/bin/terminal-notifier"
-fi
+DIRECTORIES_TO_SEARCH="~/bin /usr/local/Cellar/gems/*/bin/ /usr/local/bin /usr/bin"
+# Look for growl notify
+for i in $DIRECTORIES_TO_SEARCH; do
+    if [[ -x "$i/growlnotify" ]]; then
+        export GROWLNOTIFY="$i/growlnotify"
+        break
+    fi
+done
+# export GEM_HOME=/usr/local/Cellar/gems/1.9
+# Look for terminal-notifier
+for i in $DIRECTORIES_TO_SEARCH; do
+    if [[ -x "$i/terminal-notifier" ]]; then
+        export TERMINALNOTIFIER="$i/terminal-notifier"
+        break
+    fi
+done
 
 function print_message {
     TITLE="$1"
     MESSAGE="$2"
-    
+
     if [[ -n "$GROWLNOTIFY" ]]; then
-        $GROWLNOTIFY -a TextMate -t "${TITLE}" -m "${MESSAGE}"
+        echo "$GROWLNOTIFY"
+        bash -c -- "\"$GROWLNOTIFY\" -a TextMate -t \"${TITLE}\" -m \"${MESSAGE}\""
+    elif [[ -n "$TERMINALNOTIFIER" ]]; then
+        bash -c -- "\"$TERMINALNOTIFIER\" -activate \"${TM_APP_IDENTIFIER}\" -title \"TextMate\" -subtitle \"${TITLE}\" -message \"${MESSAGE}\"" 1>/dev/null
     else
         echo "${TITLE}: ${MESSAGE}"
-    fi
-    
-    if [[ -n "$TERMINALNOTIFIER" ]]; then
-        $TERMINALNOTIFIER -title "${TITLE}" -message "${MESSAGE}"
     fi
 }
 
 function error_message {
     TITLE="$1"
     MESSAGE="$2"
-    
+
     if [[ -n "$GROWLNOTIFY" ]]; then
-        $GROWLNOTIFY -a TextMate -t "${TITLE}" -m "${MESSAGE}" -p 2 -s
+        bash -c -- "\"$GROWLNOTIFY\" -a TextMate -t \"${TITLE}\" -m \"${MESSAGE}\" -p 2 -s"
+    elif [[ -n "$TERMINALNOTIFIER" ]]; then
+        bash -c -- "\"$TERMINALNOTIFIER\" -activate \"${TM_APP_IDENTIFIER}\" -title \"TextMate\" -subtitle \"${TITLE}\" -message \"${MESSAGE}\"" 1>/dev/null
     else
         echo "${TITLE}: ${MESSAGE}"
-    fi
-    
-    if [[ -n "$GROWLNOTIFY" ]]; then
-        $TERMINALNOTIFIER -title "${TITLE}" -message "${MESSAGE}"
     fi
 }
