@@ -35,6 +35,10 @@ Changes
   + Added README.markdown
   + Remote pre command
   + Optional auto close of sync output window after a timeout (plu)
+- **1.3.0** (2012-09-27)  
+  + Added support for [terminal-notifier](https://github.com/alloy/terminal-notifier) (mpa)
+  + Added styles for pretty output
+  + Made output more user friendly
 
 Authors
 -------
