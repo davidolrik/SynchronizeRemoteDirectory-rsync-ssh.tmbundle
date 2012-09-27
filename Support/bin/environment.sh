@@ -24,7 +24,6 @@ function print_message {
     MESSAGE="$2"
 
     if [[ -n "$GROWLNOTIFY" ]]; then
-        echo "$GROWLNOTIFY"
         bash -c -- "\"$GROWLNOTIFY\" -a TextMate -t \"${TITLE}\" -m \"${MESSAGE}\""
     elif [[ -n "$TERMINALNOTIFIER" ]]; then
         bash -c -- "\"$TERMINALNOTIFIER\" -activate \"${TM_APP_IDENTIFIER}\" -title \"TextMate\" -subtitle \"${TITLE}\" -message \"${MESSAGE}\"" 1>/dev/null
