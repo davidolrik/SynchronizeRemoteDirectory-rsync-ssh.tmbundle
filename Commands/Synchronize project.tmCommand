@@ -36,6 +36,7 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
         echo "&lt;/pre&gt;"
         cd - 2&gt;&amp;1 &gt; /dev/null
         echo "&lt;b&gt;Sync complete!&lt;/b&gt;"
+        print_message "$REMOTE_HOST" "Project synchronized!" 1
 
         if [[ -n "$REMOTE_POST_COMMAND" ]]; then
             echo "&lt;h3&gt;Running remote post command&lt;/h3&gt;"
