@@ -10,24 +10,43 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
         . "$TM_BUNDLE_SUPPORT/bin/environment.sh"
         . "$TM_BUNDLE_SUPPORT/bin/test_for_project.sh"
         . "$TM_BUNDLE_SUPPORT/bin/load_config.sh"
+        echo "&lt;style type=\"text/css\"&gt;"
+        echo "body { font-family: Helvetica, sans-serif; color: #000; }"
+        echo "pre { margin-left: 25px; }"
+        echo "hr {"
+        echo "border: 0;"
+        echo "height: 1px;"
+        echo "background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.50), rgba(0,0,0,0)); "
+        echo "background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.50), rgba(0,0,0,0)); "
+        echo "background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.50), rgba(0,0,0,0)); "
+        echo "background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.50), rgba(0,0,0,0)); "
+        echo "}"
+        echo "&lt;/style&gt;"
         echo "&lt;h1&gt;Synchronize project&lt;/h1&gt;"
         echo "&lt;h3&gt;$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH&lt;/h3&gt;"
+        echo "&lt;hr&gt;"
 
         if [[ -n "$REMOTE_PRE_COMMAND" ]]; then
-            echo "&lt;h3&gt;Running remote pre command&lt;/h3&gt;"
+            echo "&lt;b&gt;Running remote pre command&lt;/b&gt;"
+            echo "&lt;pre&gt;"
             echo "&lt;b&gt;\$ $REMOTE_PRE_COMMAND&lt;/b&gt;";
             OUT=$(ssh -f -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" -- "cd \"$REMOTE_PATH\" &amp;&amp; $REMOTE_PRE_COMMAND 2&gt;&amp;1")
-            echo "&lt;pre&gt;"
             echo "$OUT"
             echo "&lt;/pre&gt;"
-            echo "&lt;b&gt;Remote pre command complete!&lt;/b&gt;";
+            echo "&lt;b&gt;Remote pre command complete!&lt;/b&gt;"
+            echo "&lt;hr&gt;"
         fi
 
-        echo "&lt;pre&gt;"
+        echo "&lt;b&gt;Building rsync command:&lt;/b&gt;";
         cd "$TM_PROJECT_DIRECTORY"
         RSYNC_CMD="rsync -v -zar --exclude=.tm_sync.config $RSYNC_OPTIONS"
+        echo "&lt;pre&gt;"
         echo "$RSYNC_CMD -e \"ssh -p $REMOTE_PORT\" . \"$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH\""
-        echo
+        echo "&lt;/pre&gt;"
+        echo "&lt;hr&gt;"
+
+        echo "&lt;b&gt;Executing rsync:&lt;/b&gt;"
+        echo "&lt;pre&gt;"
         $RSYNC_CMD -e "ssh -p $REMOTE_PORT" \
             . "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH" 2&gt;&amp;1 \
             | grep -v 'bind: Address already in use' \
@@ -35,18 +54,22 @@ source "$TM_SUPPORT_PATH/lib/bash_init.sh" # might not be necessary
             | grep -v 'Could not request local forwarding.'
         echo "&lt;/pre&gt;"
         cd - 2&gt;&amp;1 &gt; /dev/null
-        echo "&lt;b&gt;Sync complete!&lt;/b&gt;"
-        print_message "$REMOTE_HOST" "Project synchronized!" 1
+        echo "&lt;b&gt;Upload complete!&lt;/b&gt;"
+        echo "&lt;hr&gt;"
 
         if [[ -n "$REMOTE_POST_COMMAND" ]]; then
-            echo "&lt;h3&gt;Running remote post command&lt;/h3&gt;"
+            echo "&lt;b&gt;Running remote post command&lt;/b&gt;"
+            echo "&lt;pre&gt;"
             echo "&lt;b&gt;\$ $REMOTE_POST_COMMAND&lt;/b&gt;";
             OUT=$(ssh -f -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" -- "cd \"$REMOTE_PATH\" &amp;&amp; $REMOTE_POST_COMMAND 2&gt;&amp;1")
-            echo "&lt;pre&gt;"
             echo "$OUT"
             echo "&lt;/pre&gt;"
             echo "&lt;b&gt;Remote post command complete!&lt;/b&gt;";
+            echo "&lt;hr&gt;"
         fi
+
+        echo "&lt;h3&gt;Project synchronized!&lt;/h3&gt;"
+        print_message "$REMOTE_USER@$REMOTE_HOST" "Project synchronized!"
 
         if [ -n "$AUTO_CLOSE_WINDOW" ]; then
             sleep $AUTO_CLOSE_WINDOW
